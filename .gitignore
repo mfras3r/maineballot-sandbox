@@ -1,1 +1,13 @@
-frontend/node_modules/*
+.vs/
+
+*.user
+
+bin/
+obj/
+
+gulpfile.js
+app.js
+frontend/assets/ts/**/*.js
+frontend/assets/sass/**/*.css
+node_modules
+frontend/public/*

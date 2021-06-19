@@ -1,6 +1,39 @@
 <html>
 <head>
+    <title>Maine Ballot Interactive Map</title>
+    <script>
+    var xHttp = new XMLHttpRequest();
+    xHttp.onreadystatechange = () => {
+        if (xHttp.readyState === 4 && xHttp.status === 200) {
+            var manifest = JSON.parse(xHttp.responseText);
+            console.log(manifest);
+            for (var propertyName in manifest) {
+                if (!Object.prototype.hasOwnProperty.call(manifest, propertyName)) {
+                    continue;
+                }
 
+                if (propertyName === "bundle.js") {
+                    continue;
+                }
+
+                var cacheBustFileName = manifest[propertyName];
+                if (cacheBustFileName.indexOf(".js") > -1) {
+                    var script = document.createElement("script");
+                    script.src = `/static/js/${cacheBustFileName}`;
+                    script.async = true;
+                    document.head.append(script);
+                } else if (cacheBustFileName.indexOf(".css") > -1) {
+                    var link = document.createElement("link");
+                    link.rel = "stylesheet";
+                    link.href = `/static/css/${cacheBustFileName}`;
+                    document.head.prepend(link);
+                }
+            }
+        }
+    }
+    xHttp.open("GET", "/static/rev-manifest.json", true);
+    xHttp.send();
+    </script>
 </head>
 <body>
 	<h1>Welcome</h1>
